@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  
+    <title>从ISO镜像文件启动linux发现的ntfs驱动问题 :: Neverland</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="许多linux发行版都支持从iso镜像启动，本质是在initramfs阶段创建了一个loop块设备并从中启动内核，一次实践让我发现了ntfs3的一个小问题.
+" />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="//localhost:1313/posts/grub_boot/" />
+
+
+
+
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/buttons.min.86f6b4c106b6c6eb690ae5203d36b442c1f66f718ff4e8164fa86cf6c61ad641.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/code.min.c4581949edab7810737609fc5568852bcd908945f14561e366dcd2300a370545.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/footer.min.eb8dfc2c6a7eafa36cd3ba92d63e69e849e2200e0002a228d137f236b09ecd75.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/header.min.75c7eb0e2872d95ff48109c6647d0223a38db52e2561dd87966eb5fc7c6bdac6.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/main.min.f9c90310684ff826f6cca801f5948ce6fd68af404ac20f43353e167f5eca6901.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/menu.min.3c17467ebeb3d38663dce68f71f519901124fa5cbb4519b2fb0667a21e9aca39.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/pagination.min.bbb986dbce00a5ce5aca0504b7925fc1c581992a4bf57f163e5d69cc1db7d836.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/post.min.cab529610367423d0718428e43f91ab50b9762ea38e83782e88598159bc50639.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/syntax.min.a2cc694a9b481f15d41722bffc2cc54eea4c4f74fd9072b0b33253604c22606e.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/terminal.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+
+
+<link rel="stylesheet" href="//localhost:1313/terminal.css">
+
+
+
+
+<link rel="shortcut icon" href="//localhost:1313/favicon.png">
+<link rel="apple-touch-icon" href="//localhost:1313/apple-touch-icon.png">
+
+
+<meta name="twitter:card" content="summary" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="从ISO镜像文件启动linux发现的ntfs驱动问题">
+<meta property="og:description" content="许多linux发行版都支持从iso镜像启动，本质是在initramfs阶段创建了一个loop块设备并从中启动内核，一次实践让我发现了ntfs3的一个小问题.
+" />
+<meta property="og:url" content="//localhost:1313/posts/grub_boot/" />
+<meta property="og:site_name" content="Neverland" />
+
+  <meta property="og:image" content="//localhost:1313/og-image.png">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2025-09-21 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+
+<div class="container center">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    KDM&#39;s Blog
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about" >About</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="//localhost:1313/posts/grub_boot/">从ISO镜像文件启动linux发现的ntfs驱动问题</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2025-09-21</time><span class="post-reading-time">2 min read (868 words)</span></div>
+
+  
+  
+
+
+  
+    <details class="table-of-contents" open>
+      <summary>
+        目录
+      </summary>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1前置知识">1.前置知识</a></li>
+    <li><a href="#2发现问题">2.发现问题</a></li>
+    <li><a href="#3解决方法">3.解决方法</a></li>
+  </ul>
+</nav>
+    </details>
+  
+
+  <div class="post-content"><div>
+        <p>许多linux发行版都支持从iso镜像启动，本质是在initramfs阶段创建了一个loop块设备并从中启动内核，一次实践让我发现了ntfs3的一个小问题.</p>
+<h2 id="1前置知识">1.前置知识<a href="#1前置知识" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>loop的作用是将文件映射为块设备，将块层I/O请求转换为文件操作。具体的映射在这个函数中实现：
+
+
+
+<details class="collapsable-code" >
+    <summary title="Click to interact"><span class="collapsable-code__title">loop.c#L415</span></summary>
+    <div class="highlight"><pre tabindex="0" style="color:#575279;background-color:#faf4ed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#286983">static</span> <span style="color:#286983">int</span> <span style="color:#d7827e">do_req_filebacked</span><span style="color:#797593">(</span><span style="color:#286983">struct</span> <span style="color:#d7827e">loop_device</span> <span style="color:#797593">*</span><span style="color:#d7827e">lo</span><span style="color:#797593">,</span> <span style="color:#286983">struct</span> <span style="color:#d7827e">request</span> <span style="color:#797593">*</span><span style="color:#d7827e">rq</span><span style="color:#797593">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#797593">{</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#286983">struct</span> <span style="color:#d7827e">loop_cmd</span> <span style="color:#797593">*</span><span style="color:#d7827e">cmd</span> <span style="color:#797593">=</span> <span style="color:#d7827e">blk_mq_rq_to_pdu</span><span style="color:#797593">(</span><span style="color:#d7827e">rq</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#286983">loff_t</span> <span style="color:#d7827e">pos</span> <span style="color:#797593">=</span> <span style="color:#797593">((</span><span style="color:#286983">loff_t</span><span style="color:#797593">)</span> <span style="color:#d7827e">blk_rq_pos</span><span style="color:#797593">(</span><span style="color:#d7827e">rq</span><span style="color:#797593">)</span> <span style="color:#797593">&lt;&lt;</span> <span style="color:#ea9d34">9</span><span style="color:#797593">)</span> <span style="color:#797593">+</span> <span style="color:#d7827e">lo</span><span style="color:#797593">-&gt;</span><span style="color:#d7827e">lo_offset</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#286983">switch</span> <span style="color:#797593">(</span><span style="color:#d7827e">req_op</span><span style="color:#797593">(</span><span style="color:#d7827e">rq</span><span style="color:#797593">))</span> <span style="color:#797593">{</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#286983">case</span> <span style="color:#d7827e">REQ_OP_FLUSH</span><span style="color:#797593">:</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#286983">return</span> <span style="color:#d7827e">lo_req_flush</span><span style="color:#797593">(</span><span style="color:#d7827e">lo</span><span style="color:#797593">,</span> <span style="color:#d7827e">rq</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#286983">case</span> <span style="color:#d7827e">REQ_OP_WRITE_ZEROES</span><span style="color:#797593">:</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#9893a5">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#9893a5">		 * If the caller doesn&#39;t want deallocation, call zeroout to
+</span></span></span><span style="display:flex;"><span><span style="color:#9893a5">		 * write zeroes the range.  Otherwise, punch them out.
+</span></span></span><span style="display:flex;"><span><span style="color:#9893a5">		 */</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#286983">return</span> <span style="color:#d7827e">lo_fallocate</span><span style="color:#797593">(</span><span style="color:#d7827e">lo</span><span style="color:#797593">,</span> <span style="color:#d7827e">rq</span><span style="color:#797593">,</span> <span style="color:#d7827e">pos</span><span style="color:#797593">,</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#797593">(</span><span style="color:#d7827e">rq</span><span style="color:#797593">-&gt;</span><span style="color:#d7827e">cmd_flags</span> <span style="color:#797593">&amp;</span> <span style="color:#d7827e">REQ_NOUNMAP</span><span style="color:#797593">)</span> <span style="color:#797593">?</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#d7827e">FALLOC_FL_ZERO_RANGE</span> <span style="color:#797593">:</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#d7827e">FALLOC_FL_PUNCH_HOLE</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#286983">case</span> <span style="color:#d7827e">REQ_OP_DISCARD</span><span style="color:#797593">:</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#286983">return</span> <span style="color:#d7827e">lo_fallocate</span><span style="color:#797593">(</span><span style="color:#d7827e">lo</span><span style="color:#797593">,</span> <span style="color:#d7827e">rq</span><span style="color:#797593">,</span> <span style="color:#d7827e">pos</span><span style="color:#797593">,</span> <span style="color:#d7827e">FALLOC_FL_PUNCH_HOLE</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#286983">case</span> <span style="color:#d7827e">REQ_OP_WRITE</span><span style="color:#797593">:</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#286983">return</span> <span style="color:#d7827e">lo_rw_aio</span><span style="color:#797593">(</span><span style="color:#d7827e">lo</span><span style="color:#797593">,</span> <span style="color:#d7827e">cmd</span><span style="color:#797593">,</span> <span style="color:#d7827e">pos</span><span style="color:#797593">,</span> <span style="color:#d7827e">ITER_SOURCE</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#286983">case</span> <span style="color:#d7827e">REQ_OP_READ</span><span style="color:#797593">:</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#286983">return</span> <span style="color:#d7827e">lo_rw_aio</span><span style="color:#797593">(</span><span style="color:#d7827e">lo</span><span style="color:#797593">,</span> <span style="color:#d7827e">cmd</span><span style="color:#797593">,</span> <span style="color:#d7827e">pos</span><span style="color:#797593">,</span> <span style="color:#d7827e">ITER_DEST</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#286983">default</span><span style="color:#797593">:</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#d7827e">WARN_ON_ONCE</span><span style="color:#797593">(</span><span style="color:#ea9d34">1</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#286983">return</span> <span style="color:#797593">-</span><span style="color:#d7827e">EIO</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#797593">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#797593">}</span>
+</span></span></code></pre></div></details>
+</p>
+<h2 id="2发现问题">2.发现问题<a href="#2发现问题" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>测试使用mkfs.ext4 -F创建了5g的img，再用losetup -fP创建loop报错：</p>
+<pre tabindex="0"><code>[xxx.xxxxxx] operation not supported error, dev loop0, sector xxxxxx op 0x9:  
+(WRITE_ZEROES) flags 0x800 phys_seg 0 prio class 2
+</code></pre><p>这对应的是块请求<code>REQ_OP_WRITE_ZEROES</code>，在loop中被转换为<code>FALLOC_FL_ZERO_RANGE</code>或<code>FALLOC_FL_PUNCH_HOLE</code>（是否要释放）</p>
+<p>然后我们来到ntfs3的<a href="https://elixir.bootlin.com/linux/v6.17.12/source/fs/ntfs3/file.c#L492">ntfs_fallocate</a>，就会发现它只处理了punch hole，没有zero range&hellip;</p>
+<p>但是事情没那么简单，如果继续往下读<code>FALLOC_FL_ZERO_RANGE</code>的处理逻辑，会发现它调用了一个叫<a href="https://elixir.bootlin.com/linux/v6.17.12/source/fs/ntfs3/file.c#L198">ntfs_zero_range</a>的函数，这看起来正是我们想要的zero_range实现，但其只作为punch hole的辅助函数，没有暴露出来，这会是为什么呢？？？</p>
+<p>合理的解释是：zero range在ntfs上实现并不容易。<br>
+对于一些linux文件系统比如ext4，拥有unwritten extent机制：zero range时可以不真正写0，只修改extent metadata，读时直接返回0；<br>
+而ntfs没有对应的机制，想实现zero range只能写0，但这就失去zero range的意义了，不如直接write；如果硬要支持，只能承受低效or魔改的代价；<br>
+补充信息：<a href="https://patchwork.kernel.org/project/linux-block/patch/20200702015401.51199-1-luoshijie1@huawei.com/">patchwork</a></p>
+<h2 id="3解决方法">3.解决方法<a href="#3解决方法" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>其实解决办法也很简单：换成不那么依赖zero range的fs就好了！<br>
+btrfs这样的CoW文件系统就不会有这样的问题；最后成功boot iso：</p>
+<pre tabindex="0"><code>menuentry &#39;archiso test&#39; {
+    loopback loop (hd1,gpt3)/dl/mirror/archlinux-2025.02.01-x86_64.iso
+    linux (loop)/arch/boot/x86_64/vmlinuz-linux img_dev=UUID=xxxxxxxxxxxx img_loop=dl/mirror/archlinux-2025.02.01-x86_64.iso earlymodules=loop
+    initrd (loop)/arch/boot/x86_64/initramfs-linux.img
+    boot
+}
+</code></pre>
+      </div></div>
+
+  
+    
+<div class="pagination">
+  <div class="pagination__title">
+    <span class="pagination__title-h">Read other posts</span>
+    <hr />
+  </div>
+  <div class="pagination__buttons">
+    
+      <a href="//localhost:1313/posts/cs_unity_mod_dev/" class="button inline prev">
+        &lt; [<span class="button__text">unity mod开发初体验</span>]
+      </a>
+    
+    
+      ::
+    
+    
+      <a href="//localhost:1313/posts/grub-windows/" class="button inline next">
+         [<span class="button__text">windows安装grub2 &amp; 踩坑</span>] &gt;
+      </a>
+    
+  </div>
+</div>
+
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2026 Powered by <a href="https://gohugo.io">Hugo</a></span>
+    
+      <span>:: <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

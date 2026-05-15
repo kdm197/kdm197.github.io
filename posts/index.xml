@@ -16,6 +16,13 @@
       <description>&lt;h2 id=&#34;test&#34;&gt;Test&lt;/h2&gt;&#xA;&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel lacinia neque. Praesent nulla quam, ullamcorper in sollicitudin ac, molestie sed justo. Cras aliquam, sapien id consectetur accumsan, augue magna faucibus ex, ut ultricies turpis tortor vel ante. In at rutrum tellus.&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Machne Learning in C</title>
+      <link>https://kdm197.github.io/posts/machine_learning_in_c/</link>
+      <pubDate>Thu, 30 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://kdm197.github.io/posts/machine_learning_in_c/</guid>
+      <description>&lt;p&gt;前段时间刷到了tsoding和magicalbat的c语言机器学习库，顿时心痒难耐，决定实现一个自己的版本&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>新年小记</title>
       <link>https://kdm197.github.io/posts/new_year_2026/</link>
       <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Machne Learning in C :: Neverland</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="前段时间刷到了tsoding和magicalbat的c语言机器学习库，顿时心痒难耐，决定实现一个自己的版本
+" />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="https://kdm197.github.io/posts/machine_learning_in_c/" />
+
+
+
+
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/buttons.min.86f6b4c106b6c6eb690ae5203d36b442c1f66f718ff4e8164fa86cf6c61ad641.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/code.min.c4581949edab7810737609fc5568852bcd908945f14561e366dcd2300a370545.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/footer.min.eb8dfc2c6a7eafa36cd3ba92d63e69e849e2200e0002a228d137f236b09ecd75.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/header.min.75c7eb0e2872d95ff48109c6647d0223a38db52e2561dd87966eb5fc7c6bdac6.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/main.min.f9c90310684ff826f6cca801f5948ce6fd68af404ac20f43353e167f5eca6901.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/menu.min.3c17467ebeb3d38663dce68f71f519901124fa5cbb4519b2fb0667a21e9aca39.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/pagination.min.bbb986dbce00a5ce5aca0504b7925fc1c581992a4bf57f163e5d69cc1db7d836.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/post.min.cab529610367423d0718428e43f91ab50b9762ea38e83782e88598159bc50639.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/syntax.min.a2cc694a9b481f15d41722bffc2cc54eea4c4f74fd9072b0b33253604c22606e.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/terminal.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+
+
+<link rel="stylesheet" href="https://kdm197.github.io/terminal.css">
+
+
+
+
+<link rel="shortcut icon" href="https://kdm197.github.io/favicon.png">
+<link rel="apple-touch-icon" href="https://kdm197.github.io/apple-touch-icon.png">
+
+
+<meta name="twitter:card" content="summary" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Machne Learning in C">
+<meta property="og:description" content="前段时间刷到了tsoding和magicalbat的c语言机器学习库，顿时心痒难耐，决定实现一个自己的版本
+" />
+<meta property="og:url" content="https://kdm197.github.io/posts/machine_learning_in_c/" />
+<meta property="og:site_name" content="Neverland" />
+
+  <meta property="og:image" content="https://kdm197.github.io/og-image.png">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2026-04-30 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+
+<div class="container center">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    KDM&#39;s Blog
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about" >About</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://kdm197.github.io/posts/machine_learning_in_c/">Machne Learning in C</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2026-04-30</time><span class="post-reading-time">4 min read (1676 words)</span></div>
+
+  
+  
+
+
+  
+    <details class="table-of-contents" open>
+      <summary>
+        目录
+      </summary>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#出发点">出发点</a></li>
+    <li><a href="#规划">规划</a></li>
+    <li><a href="#遇到的问题">遇到的问题</a></li>
+    <li><a href="#改进">改进</a></li>
+  </ul>
+</nav>
+    </details>
+  
+
+  <div class="post-content"><div>
+        <p>前段时间刷到了tsoding和magicalbat的c语言机器学习库，顿时心痒难耐，决定实现一个自己的版本</p>
+<h2 id="出发点">出发点<a href="#出发点" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>初中时学到了pytorch的autograd，觉得这也太酷了！结果好不容易成为闲得出屁的大学生，直到前段时间才想起自己的梦想。一不做二不休，马上开干</p>
+<h2 id="规划">规划<a href="#规划" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>我没参考tsoding和magicalbat的实现，一个声音告诉我你要是提前偷看答案就输了所以我尝试独立构思。<br>
+首先想要实现的是类似pytorch的：</p>
+<div class="highlight"><pre tabindex="0" style="color:#575279;background-color:#faf4ed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#d7827e">x</span> <span style="color:#797593">=</span> <span style="color:#d7827e">torch</span><span style="color:#797593">.</span><span style="color:#d7827e">relu</span><span style="color:#797593">(</span><span style="color:#d7827e">self</span><span style="color:#797593">.</span><span style="color:#d7827e">fc1</span><span style="color:#797593">(</span><span style="color:#d7827e">x</span><span style="color:#797593">))</span> <span style="color:#9893a5"># 嵌套函数</span>
+</span></span><span style="display:flex;"><span><span style="color:#d7827e">x</span> <span style="color:#797593">=</span> <span style="color:#d7827e">self</span><span style="color:#797593">.</span><span style="color:#d7827e">fc2</span><span style="color:#797593">(</span><span style="color:#d7827e">x</span><span style="color:#797593">)</span> <span style="color:#9893a5"># 复用变量</span>
+</span></span></code></pre></div><p>这意味着矩阵类型必须是一个（逻辑上的）引用，且矩阵数据需要在外部被持有（用于自动微分）<br>
+所以矩阵类型<code>mat</code>被定义为<code>mat_s*</code>，而<code>mat_s*</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#575279;background-color:#faf4ed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#286983">typedef</span> <span style="color:#286983">struct</span> <span style="color:#d7827e">mat_expr</span> <span style="color:#797593">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat_op</span> <span style="color:#d7827e">op</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">left</span><span style="color:#797593">,</span> <span style="color:#d7827e">right</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#797593">}</span> <span style="color:#d7827e">mat_expr</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#286983">typedef</span> <span style="color:#286983">struct</span> <span style="color:#d7827e">mat_s</span> <span style="color:#797593">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">int</span> <span style="color:#d7827e">rows</span><span style="color:#797593">,</span> <span style="color:#d7827e">cols</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">float</span> <span style="color:#797593">*</span><span style="color:#d7827e">data</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">grad</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat_expr</span> <span style="color:#d7827e">expr</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">bool</span> <span style="color:#d7827e">use_autograd</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#797593">}</span> <span style="color:#d7827e">mat_s</span><span style="color:#797593">;</span>
+</span></span></code></pre></div><p>运算结果矩阵持有参与运算的矩阵，直接由矩阵构成计算图；grad也同为mat类型，为二阶微分做准备<br>
+backward就是一个大switch调用当前mat的微分函数，再递归到下一个mat；</p>
+<h2 id="遇到的问题">遇到的问题<a href="#遇到的问题" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>后向全部做好后，急忙写了一个最简单的异或网络：</p>
+<div class="highlight"><pre tabindex="0" style="color:#575279;background-color:#faf4ed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#d7827e">mat</span> <span style="color:#d7827e">w1</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_rand</span><span style="color:#797593">(</span><span style="color:#ea9d34">2</span><span style="color:#797593">,</span> <span style="color:#ea9d34">2</span><span style="color:#797593">,</span> <span style="color:#d7827e">true</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#d7827e">mat</span> <span style="color:#d7827e">b1</span> <span style="color:#797593">=</span> <span style="color:#d7827e">new_mat</span><span style="color:#797593">(</span><span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#ea9d34">2</span><span style="color:#797593">,</span> <span style="color:#d7827e">true</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#d7827e">mat</span> <span style="color:#d7827e">w2</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_rand</span><span style="color:#797593">(</span><span style="color:#ea9d34">2</span><span style="color:#797593">,</span> <span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#d7827e">true</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#d7827e">mat</span> <span style="color:#d7827e">b2</span> <span style="color:#797593">=</span> <span style="color:#d7827e">new_mat</span><span style="color:#797593">(</span><span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#d7827e">true</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#d7827e">mat</span> <span style="color:#d7827e">x</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_create</span><span style="color:#797593">(</span><span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#ea9d34">2</span><span style="color:#797593">,</span> <span style="color:#797593">(</span><span style="color:#286983">float</span><span style="color:#797593">[]){</span><span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#ea9d34">1</span><span style="color:#797593">},</span> <span style="color:#d7827e">false</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#d7827e">mat</span> <span style="color:#d7827e">y</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_create</span><span style="color:#797593">(</span><span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#797593">(</span><span style="color:#286983">float</span><span style="color:#797593">[]){</span><span style="color:#ea9d34">0</span><span style="color:#797593">},</span> <span style="color:#d7827e">false</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#d7827e">mat</span> <span style="color:#d7827e">z1</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_add</span><span style="color:#797593">(</span><span style="color:#d7827e">mat_mul</span><span style="color:#797593">(</span><span style="color:#d7827e">x</span><span style="color:#797593">,</span> <span style="color:#d7827e">w1</span><span style="color:#797593">),</span> <span style="color:#d7827e">b1</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#d7827e">mat</span> <span style="color:#d7827e">a1</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_sigmoid</span><span style="color:#797593">(</span><span style="color:#d7827e">z1</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#d7827e">mat</span> <span style="color:#d7827e">z2</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_add</span><span style="color:#797593">(</span><span style="color:#d7827e">mat_mul</span><span style="color:#797593">(</span><span style="color:#d7827e">a1</span><span style="color:#797593">,</span> <span style="color:#d7827e">w2</span><span style="color:#797593">),</span> <span style="color:#d7827e">b2</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#d7827e">mat</span> <span style="color:#d7827e">a2</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_sigmoid</span><span style="color:#797593">(</span><span style="color:#d7827e">z2</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#d7827e">mat</span> <span style="color:#d7827e">loss</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_pow</span><span style="color:#797593">(</span><span style="color:#d7827e">mat_sub</span><span style="color:#797593">(</span><span style="color:#d7827e">a2</span><span style="color:#797593">,</span> <span style="color:#d7827e">y</span><span style="color:#797593">),</span> <span style="color:#ea9d34">2</span><span style="color:#797593">);</span>
+</span></span></code></pre></div><p>这只是一次前向过程，那多次前向呢？<br>
+其实可以做成动态图，每个循环结束后释放资源，下一次重新构造，优点是可以动态构造复杂网络；然而清除矩阵的实现不太优雅，矩阵之间按照计算图互相持有，必须得从<code>loss</code>往下遍历，还得区分权重/输入矩阵与中间矩阵；所以最后的解决方案是静态图，临时添加了一个全局mat数组，所有运算函数会自动把结果push进去，最后用forward沿着数组执行计算（返回结果矩阵的mat_op自动push，结果矩阵作为参数的mat_set_op同为mat_op内部实现，不push）；<br>
+第二个问题是运算的细粒度与随之而来的优化问题：softmax+交叉熵可以被拆成log_softmax+NLLLoss，这种拆法带来了更好的数值稳定性与更好的效率，且二者合并微分形式比拆分的简单得多；将此二者合并又会带来问题：中间矩阵超过了2个，而在一开始的设计中我们只准备了左右值的空位；这里我不得不做了一个hack，把多出来的矩阵存到左值的grad里并设use_autograd为false，避免被zero_grads清除<br>
+最后一个问题是在构建mnist手写数字识别网络遇到的；使用普通的[0,1]均匀分布rand的权重mat会导致梯度爆炸，为了解决这个问题学到了xavier初始化，其想法是控制输出方差接近于其输入方差，即：<br>
+</p>
+<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false">(</mo><mi>w</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>2</mn><mrow><msub><mi>n</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>n</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+Var(w) = \frac {2} {n_{in} + n_{out}}
+</annotation></semantics></math></span><p>
+对于均匀分布：
+</p>
+<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false">(</mo><mi>w</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mo stretchy="false">(</mo><mi>b</mi><mo>−</mo><mi>a</mi><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><mn>12</mn></mfrac></mrow><annotation encoding="application/x-tex">
+Var(w) = \frac {(b - a)^2} {12}
+</annotation></semantics></math></span><p>
+我们的分布最后为<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo stretchy="false">(</mo><mo>−</mo><mi>r</mi><mo separator="true">,</mo><mi>r</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>r</mi><mo>=</mo><msqrt><mfrac><mn>6</mn><mrow><msub><mi>n</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub><mo>+</mo><msub><mi>n</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow></mfrac></msqrt></mrow><annotation encoding="application/x-tex">U(-r, r), r = \sqrt {\frac {6} {n_{in} + n_{out}}}</annotation></semantics></math></span><br>
+这个方法也可以缓解梯度消失问题</p>
+<p>最后网络完整代码：
+
+
+
+<details class="collapsable-code" >
+    <summary title="Click to interact"><span class="collapsable-code__title">mnist_nn</span></summary>
+    <div class="highlight"><pre tabindex="0" style="color:#575279;background-color:#faf4ed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#286983">int</span> <span style="color:#d7827e">mnist_nn</span><span style="color:#797593">()</span> <span style="color:#797593">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">const</span> <span style="color:#286983">char</span> <span style="color:#797593">*</span><span style="color:#d7827e">img_path</span> <span style="color:#797593">=</span> <span style="color:#ea9d34">&#34;train-images.idx3-ubyte&#34;</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">const</span> <span style="color:#286983">char</span> <span style="color:#797593">*</span><span style="color:#d7827e">lbl_path</span> <span style="color:#797593">=</span> <span style="color:#ea9d34">&#34;train-labels.idx1-ubyte&#34;</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">MnistImages</span> <span style="color:#d7827e">imgs</span> <span style="color:#797593">=</span> <span style="color:#d7827e">load_images</span><span style="color:#797593">(</span><span style="color:#d7827e">img_path</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">MnistLabels</span> <span style="color:#d7827e">lbls</span> <span style="color:#797593">=</span> <span style="color:#d7827e">load_labels</span><span style="color:#797593">(</span><span style="color:#d7827e">lbl_path</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">if</span> <span style="color:#797593">(</span><span style="color:#797593">!</span><span style="color:#d7827e">imgs</span><span style="color:#797593">.</span><span style="color:#d7827e">data</span> <span style="color:#797593">||</span> <span style="color:#797593">!</span><span style="color:#d7827e">lbls</span><span style="color:#797593">.</span><span style="color:#d7827e">data</span><span style="color:#797593">)</span> <span style="color:#797593">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">fprintf</span><span style="color:#797593">(</span><span style="color:#d7827e">stderr</span><span style="color:#797593">,</span> <span style="color:#ea9d34">&#34;Failed to load dataset.</span><span style="color:#286983">\n</span><span style="color:#ea9d34">&#34;</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#286983">return</span> <span style="color:#ea9d34">1</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#797593">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">printf</span><span style="color:#797593">(</span><span style="color:#ea9d34">&#34;Loaded %d images (%dx%d), %d labels.</span><span style="color:#286983">\n\n</span><span style="color:#ea9d34">&#34;</span><span style="color:#797593">,</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#d7827e">imgs</span><span style="color:#797593">.</span><span style="color:#d7827e">num_images</span><span style="color:#797593">,</span> <span style="color:#d7827e">imgs</span><span style="color:#797593">.</span><span style="color:#d7827e">rows</span><span style="color:#797593">,</span> <span style="color:#d7827e">imgs</span><span style="color:#797593">.</span><span style="color:#d7827e">cols</span><span style="color:#797593">,</span> <span style="color:#d7827e">lbls</span><span style="color:#797593">.</span><span style="color:#d7827e">num_labels</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">srand</span><span style="color:#797593">(</span><span style="color:#d7827e">time</span><span style="color:#797593">(</span><span style="color:#d7827e">NULL</span><span style="color:#797593">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">x</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_rand</span><span style="color:#797593">(</span><span style="color:#ea9d34">784</span><span style="color:#797593">,</span> <span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#d7827e">false</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">y</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_create</span><span style="color:#797593">(</span><span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#797593">(</span><span style="color:#286983">float</span><span style="color:#797593">[]){</span><span style="color:#ea9d34">1</span><span style="color:#797593">},</span> <span style="color:#d7827e">false</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">float</span> <span style="color:#d7827e">bound0</span> <span style="color:#797593">=</span> <span style="color:#d7827e">sqrtf</span><span style="color:#797593">(</span><span style="color:#ea9d34">6.0f</span> <span style="color:#797593">/</span> <span style="color:#797593">(</span><span style="color:#ea9d34">784</span> <span style="color:#797593">+</span> <span style="color:#ea9d34">16</span><span style="color:#797593">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">float</span> <span style="color:#d7827e">bound1</span> <span style="color:#797593">=</span> <span style="color:#d7827e">sqrtf</span><span style="color:#797593">(</span><span style="color:#ea9d34">6.0f</span> <span style="color:#797593">/</span> <span style="color:#797593">(</span><span style="color:#ea9d34">16</span> <span style="color:#797593">+</span> <span style="color:#ea9d34">16</span><span style="color:#797593">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">float</span> <span style="color:#d7827e">bound2</span> <span style="color:#797593">=</span> <span style="color:#d7827e">sqrtf</span><span style="color:#797593">(</span><span style="color:#ea9d34">6.0f</span> <span style="color:#797593">/</span> <span style="color:#797593">(</span><span style="color:#ea9d34">16</span> <span style="color:#797593">+</span> <span style="color:#ea9d34">10</span><span style="color:#797593">));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">w0</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_rand_range</span><span style="color:#797593">(</span><span style="color:#ea9d34">16</span><span style="color:#797593">,</span> <span style="color:#ea9d34">784</span><span style="color:#797593">,</span> <span style="color:#797593">-</span><span style="color:#d7827e">bound0</span><span style="color:#797593">,</span> <span style="color:#d7827e">bound0</span><span style="color:#797593">,</span> <span style="color:#d7827e">true</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">w1</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_rand_range</span><span style="color:#797593">(</span><span style="color:#ea9d34">16</span><span style="color:#797593">,</span> <span style="color:#ea9d34">16</span><span style="color:#797593">,</span> <span style="color:#797593">-</span><span style="color:#d7827e">bound1</span><span style="color:#797593">,</span> <span style="color:#d7827e">bound1</span><span style="color:#797593">,</span> <span style="color:#d7827e">true</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">w2</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_rand_range</span><span style="color:#797593">(</span><span style="color:#ea9d34">10</span><span style="color:#797593">,</span> <span style="color:#ea9d34">16</span><span style="color:#797593">,</span> <span style="color:#797593">-</span><span style="color:#d7827e">bound2</span><span style="color:#797593">,</span> <span style="color:#d7827e">bound2</span><span style="color:#797593">,</span> <span style="color:#d7827e">true</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">b0</span> <span style="color:#797593">=</span> <span style="color:#d7827e">new_mat</span><span style="color:#797593">(</span><span style="color:#ea9d34">16</span><span style="color:#797593">,</span> <span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#d7827e">true</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">b1</span> <span style="color:#797593">=</span> <span style="color:#d7827e">new_mat</span><span style="color:#797593">(</span><span style="color:#ea9d34">16</span><span style="color:#797593">,</span> <span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#d7827e">true</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">b2</span> <span style="color:#797593">=</span> <span style="color:#d7827e">new_mat</span><span style="color:#797593">(</span><span style="color:#ea9d34">10</span><span style="color:#797593">,</span> <span style="color:#ea9d34">1</span><span style="color:#797593">,</span> <span style="color:#d7827e">true</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">z0</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_add</span><span style="color:#797593">(</span><span style="color:#d7827e">mat_mul</span><span style="color:#797593">(</span><span style="color:#d7827e">w0</span><span style="color:#797593">,</span> <span style="color:#d7827e">x</span><span style="color:#797593">),</span> <span style="color:#d7827e">b0</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">a0</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_relu</span><span style="color:#797593">(</span><span style="color:#d7827e">z0</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">z1</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_add</span><span style="color:#797593">(</span><span style="color:#d7827e">mat_mul</span><span style="color:#797593">(</span><span style="color:#d7827e">w1</span><span style="color:#797593">,</span> <span style="color:#d7827e">a0</span><span style="color:#797593">),</span> <span style="color:#d7827e">b1</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">z1</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_relu</span><span style="color:#797593">(</span><span style="color:#d7827e">z1</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">a1</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_add</span><span style="color:#797593">(</span><span style="color:#d7827e">a0</span><span style="color:#797593">,</span> <span style="color:#d7827e">z1</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">a2</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_add</span><span style="color:#797593">(</span><span style="color:#d7827e">mat_mul</span><span style="color:#797593">(</span><span style="color:#d7827e">w2</span><span style="color:#797593">,</span> <span style="color:#d7827e">a1</span><span style="color:#797593">),</span> <span style="color:#d7827e">b2</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">mat</span> <span style="color:#d7827e">loss</span> <span style="color:#797593">=</span> <span style="color:#d7827e">mat_softmaxloss</span><span style="color:#797593">(</span><span style="color:#d7827e">a2</span><span style="color:#797593">,</span> <span style="color:#d7827e">y</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">backward</span><span style="color:#797593">(</span><span style="color:#d7827e">loss</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">float</span> <span style="color:#d7827e">alpha</span> <span style="color:#797593">=</span> <span style="color:#ea9d34">0.01</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">for</span> <span style="color:#797593">(</span><span style="color:#286983">int</span> <span style="color:#d7827e">i</span> <span style="color:#797593">=</span> <span style="color:#ea9d34">0</span><span style="color:#797593">;</span> <span style="color:#d7827e">i</span> <span style="color:#797593">&lt;=</span> <span style="color:#ea9d34">50000</span><span style="color:#797593">;</span> <span style="color:#d7827e">i</span><span style="color:#797593">++</span><span style="color:#797593">)</span> <span style="color:#797593">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">mat_set_image</span><span style="color:#797593">(</span><span style="color:#d7827e">x</span><span style="color:#797593">,</span> <span style="color:#d7827e">imgs</span><span style="color:#797593">.</span><span style="color:#d7827e">data</span> <span style="color:#797593">+</span> <span style="color:#d7827e">i</span> <span style="color:#797593">*</span> <span style="color:#ea9d34">784</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">y</span><span style="color:#797593">-&gt;</span><span style="color:#d7827e">data</span><span style="color:#797593">[</span><span style="color:#ea9d34">0</span><span style="color:#797593">]</span> <span style="color:#797593">=</span> <span style="color:#d7827e">lbls</span><span style="color:#797593">.</span><span style="color:#d7827e">data</span><span style="color:#797593">[</span><span style="color:#d7827e">i</span><span style="color:#797593">];</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">forward</span><span style="color:#797593">();</span> 
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">zero_grads</span><span style="color:#797593">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#286983">if</span> <span style="color:#797593">(</span><span style="color:#d7827e">i</span> <span style="color:#797593">%</span> <span style="color:#ea9d34">10000</span> <span style="color:#797593">==</span> <span style="color:#ea9d34">0</span><span style="color:#797593">)</span> <span style="color:#797593">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#d7827e">printf</span><span style="color:#797593">(</span><span style="color:#ea9d34">&#34;Iter %d: loss=%.4f</span><span style="color:#286983">\n</span><span style="color:#ea9d34">&#34;</span><span style="color:#797593">,</span> <span style="color:#d7827e">i</span><span style="color:#797593">,</span> <span style="color:#d7827e">mat_at</span><span style="color:#797593">(</span><span style="color:#d7827e">loss</span><span style="color:#797593">,</span> <span style="color:#ea9d34">0</span><span style="color:#797593">,</span> <span style="color:#ea9d34">0</span><span style="color:#797593">));</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#797593">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">backward</span><span style="color:#797593">(</span><span style="color:#d7827e">loss</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">grad_step</span><span style="color:#797593">(</span><span style="color:#d7827e">w0</span><span style="color:#797593">,</span> <span style="color:#d7827e">alpha</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">grad_step</span><span style="color:#797593">(</span><span style="color:#d7827e">b0</span><span style="color:#797593">,</span> <span style="color:#d7827e">alpha</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">grad_step</span><span style="color:#797593">(</span><span style="color:#d7827e">w1</span><span style="color:#797593">,</span> <span style="color:#d7827e">alpha</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">grad_step</span><span style="color:#797593">(</span><span style="color:#d7827e">b1</span><span style="color:#797593">,</span> <span style="color:#d7827e">alpha</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">grad_step</span><span style="color:#797593">(</span><span style="color:#d7827e">w2</span><span style="color:#797593">,</span> <span style="color:#d7827e">alpha</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">grad_step</span><span style="color:#797593">(</span><span style="color:#d7827e">b2</span><span style="color:#797593">,</span> <span style="color:#d7827e">alpha</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#797593">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">int</span> <span style="color:#d7827e">count</span> <span style="color:#797593">=</span> <span style="color:#ea9d34">0</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">for</span> <span style="color:#797593">(</span><span style="color:#286983">int</span> <span style="color:#d7827e">i</span> <span style="color:#797593">=</span> <span style="color:#ea9d34">50000</span><span style="color:#797593">;</span> <span style="color:#d7827e">i</span> <span style="color:#797593">&lt;</span> <span style="color:#ea9d34">60000</span><span style="color:#797593">;</span> <span style="color:#d7827e">i</span><span style="color:#797593">++</span><span style="color:#797593">)</span> <span style="color:#797593">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">mat_set_image</span><span style="color:#797593">(</span><span style="color:#d7827e">x</span><span style="color:#797593">,</span> <span style="color:#d7827e">imgs</span><span style="color:#797593">.</span><span style="color:#d7827e">data</span> <span style="color:#797593">+</span> <span style="color:#d7827e">i</span> <span style="color:#797593">*</span> <span style="color:#ea9d34">784</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">y</span><span style="color:#797593">-&gt;</span><span style="color:#d7827e">data</span><span style="color:#797593">[</span><span style="color:#ea9d34">0</span><span style="color:#797593">]</span> <span style="color:#797593">=</span> <span style="color:#d7827e">lbls</span><span style="color:#797593">.</span><span style="color:#d7827e">data</span><span style="color:#797593">[</span><span style="color:#d7827e">i</span><span style="color:#797593">];</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#d7827e">forward</span><span style="color:#797593">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#9893a5">// printf(&#34;Predicted: %d, Actual: %d\n&#34;, mat_label(a2), lbls.data[i]);
+</span></span></span><span style="display:flex;"><span>        <span style="color:#286983">if</span> <span style="color:#797593">(</span><span style="color:#d7827e">mat_label</span><span style="color:#797593">(</span><span style="color:#d7827e">a2</span><span style="color:#797593">)</span> <span style="color:#797593">==</span> <span style="color:#d7827e">lbls</span><span style="color:#797593">.</span><span style="color:#d7827e">data</span><span style="color:#797593">[</span><span style="color:#d7827e">i</span><span style="color:#797593">])</span> <span style="color:#797593">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#d7827e">count</span><span style="color:#797593">++</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#797593">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#797593">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d7827e">printf</span><span style="color:#797593">(</span><span style="color:#ea9d34">&#34;Accuracy: %.2f%%</span><span style="color:#286983">\n</span><span style="color:#ea9d34">&#34;</span><span style="color:#797593">,</span> <span style="color:#797593">(</span><span style="color:#286983">float</span><span style="color:#797593">)</span><span style="color:#d7827e">count</span> <span style="color:#797593">/</span> <span style="color:#ea9d34">10000</span> <span style="color:#797593">*</span> <span style="color:#ea9d34">100</span><span style="color:#797593">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#286983">return</span> <span style="color:#ea9d34">0</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#797593">}</span>
+</span></span></code></pre></div></details>
+</p>
+<p>目前很多操作都还没有封装，之后会继续优化；</p>
+<h2 id="改进">改进<a href="#改进" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>之前遇到的最大问题就是各类矩阵的生命周期问题：参考tsoding和magicalbat的做法，arena是比较好的解决方案；通过arena不但能便捷释放各类矩阵，还便于对各类矩阵进行统一操作（如对所有权重grad_step）目前的想法是定义一个全局的arena指针，通过arena_start/end来划分各个区域；然后考虑是否要将计算图与矩阵分离；<br>
+对未来的考虑：目前只实现了全连接和各种运算，如果要实现卷积，就需要考虑张量，因为卷积会输出高一维</p>
+      </div></div>
+
+  
+    
+<div class="pagination">
+  <div class="pagination__title">
+    <span class="pagination__title-h">Read other posts</span>
+    <hr />
+  </div>
+  <div class="pagination__buttons">
+    
+      <a href="https://kdm197.github.io/posts/test/" class="button inline prev">
+        &lt; [<span class="button__text">test</span>]
+      </a>
+    
+    
+      ::
+    
+    
+      <a href="https://kdm197.github.io/posts/new_year_2026/" class="button inline next">
+         [<span class="button__text">新年小记</span>] &gt;
+      </a>
+    
+  </div>
+</div>
+
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2026 Powered by <a href="https://gohugo.io">Hugo</a></span>
+    
+      <span>:: <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

@@ -2,52 +2,52 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Neverland</title>
-    <link>//localhost:1313/</link>
+    <link>https://kdm197.github.io/</link>
     <description>Recent content on Neverland</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 08 May 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="//localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://kdm197.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>test</title>
-      <link>//localhost:1313/posts/test/</link>
+      <link>https://kdm197.github.io/posts/test/</link>
       <pubDate>Fri, 08 May 2026 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/test/</guid>
+      <guid>https://kdm197.github.io/posts/test/</guid>
       <description>&lt;h2 id=&#34;test&#34;&gt;Test&lt;/h2&gt;&#xA;&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel lacinia neque. Praesent nulla quam, ullamcorper in sollicitudin ac, molestie sed justo. Cras aliquam, sapien id consectetur accumsan, augue magna faucibus ex, ut ultricies turpis tortor vel ante. In at rutrum tellus.&lt;/p&gt;</description>
     </item>
     <item>
       <title>新年小记</title>
-      <link>//localhost:1313/posts/new_year_2026/</link>
+      <link>https://kdm197.github.io/posts/new_year_2026/</link>
       <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/new_year_2026/</guid>
+      <guid>https://kdm197.github.io/posts/new_year_2026/</guid>
       <description>&lt;p&gt;放假起一直在学车；考完科目二，后天就动身去北方准备过年。&lt;/p&gt;</description>
     </item>
     <item>
       <title>unity mod开发初体验</title>
-      <link>//localhost:1313/posts/cs_unity_mod_dev/</link>
+      <link>https://kdm197.github.io/posts/cs_unity_mod_dev/</link>
       <pubDate>Wed, 03 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/cs_unity_mod_dev/</guid>
+      <guid>https://kdm197.github.io/posts/cs_unity_mod_dev/</guid>
       <description>&lt;p&gt;逃离鸭科夫让我第一次尝试了C#的mod开发，并学到了不少东西。在这里记录一些有趣的经历。&lt;/p&gt;</description>
     </item>
     <item>
       <title>从ISO镜像文件启动linux发现的ntfs驱动问题</title>
-      <link>//localhost:1313/posts/grub_boot/</link>
+      <link>https://kdm197.github.io/posts/grub_boot/</link>
       <pubDate>Sun, 21 Sep 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/grub_boot/</guid>
+      <guid>https://kdm197.github.io/posts/grub_boot/</guid>
       <description>&lt;p&gt;许多linux发行版都支持从iso镜像启动，本质是在initramfs阶段创建了一个loop块设备并从中启动内核，一次实践让我发现了ntfs3的一个小问题.&lt;/p&gt;</description>
     </item>
     <item>
       <title>windows安装grub2 &amp; 踩坑</title>
-      <link>//localhost:1313/posts/grub-windows/</link>
+      <link>https://kdm197.github.io/posts/grub-windows/</link>
       <pubDate>Wed, 10 Sep 2025 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/grub-windows/</guid>
+      <guid>https://kdm197.github.io/posts/grub-windows/</guid>
       <description>&lt;p&gt;使用windows安装grub与使用linux基本无异，这里记录一些实操时遇到的小坑&lt;/p&gt;</description>
     </item>
     <item>
       <title>关于我</title>
-      <link>//localhost:1313/about/</link>
+      <link>https://kdm197.github.io/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/about/</guid>
+      <guid>https://kdm197.github.io/about/</guid>
       <description>&lt;p&gt;普通人。&lt;/p&gt;</description>
     </item>
   </channel>

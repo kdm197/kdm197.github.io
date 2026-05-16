@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-    <title>Machne Learning in C :: Neverland</title>
+    <title>Machine Learning in C :: Neverland</title>
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,7 +70,7 @@
 
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="Machne Learning in C">
+<meta property="og:title" content="Machine Learning in C">
 <meta property="og:description" content="前段时间刷到了tsoding和magicalbat的c语言机器学习库，顿时心痒难耐，决定实现一个自己的版本
 " />
 <meta property="og:url" content="https://kdm197.github.io/posts/machine_learning_in_c/" />
@@ -151,9 +151,9 @@
     
 <article class="post">
   <h1 class="post-title">
-    <a href="https://kdm197.github.io/posts/machine_learning_in_c/">Machne Learning in C</a>
+    <a href="https://kdm197.github.io/posts/machine_learning_in_c/">Machine Learning in C</a>
   </h1>
-  <div class="post-meta"><time class="post-date">2026-04-30</time><span class="post-reading-time">4 min read (1676 words)</span></div>
+  <div class="post-meta"><time class="post-date">2026-04-30</time><span class="post-reading-time">5 min read (2060 words)</span></div>
 
   
   
@@ -309,10 +309,15 @@ Var(w) = \frac {(b - a)^2} {12}
 </span></span><span style="display:flex;"><span><span style="color:#797593">}</span>
 </span></span></code></pre></div></details>
 </p>
-<p>目前很多操作都还没有封装，之后会继续优化；</p>
+<p>虽然工具比较简陋，但至少能工作了，训练速度比想象的快很多，准确率也还不错，92%左右；为了可视化考虑把软光栅的2d部分拆出来用到这里</p>
 <h2 id="改进">改进<a href="#改进" class="hanchor" ariaLabel="Anchor">#</a> </h2>
-<p>之前遇到的最大问题就是各类矩阵的生命周期问题：参考tsoding和magicalbat的做法，arena是比较好的解决方案；通过arena不但能便捷释放各类矩阵，还便于对各类矩阵进行统一操作（如对所有权重grad_step）目前的想法是定义一个全局的arena指针，通过arena_start/end来划分各个区域；然后考虑是否要将计算图与矩阵分离；<br>
-对未来的考虑：目前只实现了全连接和各种运算，如果要实现卷积，就需要考虑张量，因为卷积会输出高一维</p>
+<p>之前遇到的最大问题就是各类矩阵的生命周期问题：参考tsoding和magicalbat的做法，arena是比较好的解决方案；通过arena不但能便捷释放各类矩阵，还便于对各类矩阵进行统一操作（如对所有权重grad_step）</p>
+<p>目前的想法是定义一个全局的arena指针栈，通过arena_start/end来划分各个区域；区域分为三个，长期arena用于权重，临时arena用于中间矩阵和输入矩阵，grad arena用于梯度；如果要二阶微分，还需要多级grad arena，arena_start/end需要考虑嵌套，所以指针栈是必要的；<br>
+arena的设计也很有意思，我至今还没实现过，对于机器学习这样内存大小稳定的应用，arena free时其实可以复用内存，缓存局部性也天然满足了。</p>
+<p>此外就是计算图与矩阵数据的分离，这样做会干净些；forward和backward将共同依赖图节点list；为了支持多模型，图节点list也需要一个指针栈。</p>
+<p>最后就是封装一些常用操作，把wx+b封装成linear，生命权重时做一个weight_start/end自动管理arena+注册等等&hellip;</p>
+<p>目前只实现了全连接和各种运算，下一个目标：等代码整理好了就做卷积。</p>
+<p>最近做的几个小项目让我意识到，我们往往低估了个人电脑的性能。我很好奇能走到多远。</p>
       </div></div>
 
   

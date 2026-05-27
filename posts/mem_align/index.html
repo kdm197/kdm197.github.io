@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>内存对齐细节 :: Neverland</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="补充一些平时可能会疏忽的&#43;有趣的对齐细节
+" />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="https://kdm197.github.io/posts/mem_align/" />
+
+
+
+
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/buttons.min.86f6b4c106b6c6eb690ae5203d36b442c1f66f718ff4e8164fa86cf6c61ad641.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/code.min.c4581949edab7810737609fc5568852bcd908945f14561e366dcd2300a370545.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/footer.min.eb8dfc2c6a7eafa36cd3ba92d63e69e849e2200e0002a228d137f236b09ecd75.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/header.min.75c7eb0e2872d95ff48109c6647d0223a38db52e2561dd87966eb5fc7c6bdac6.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/main.min.f9c90310684ff826f6cca801f5948ce6fd68af404ac20f43353e167f5eca6901.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/menu.min.3c17467ebeb3d38663dce68f71f519901124fa5cbb4519b2fb0667a21e9aca39.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/pagination.min.bbb986dbce00a5ce5aca0504b7925fc1c581992a4bf57f163e5d69cc1db7d836.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/post.min.cab529610367423d0718428e43f91ab50b9762ea38e83782e88598159bc50639.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/syntax.min.a2cc694a9b481f15d41722bffc2cc54eea4c4f74fd9072b0b33253604c22606e.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/terminal.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css">
+
+  
+  <link rel="stylesheet" href="https://kdm197.github.io/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+
+
+<link rel="stylesheet" href="https://kdm197.github.io/terminal.css">
+
+
+
+
+<link rel="shortcut icon" href="https://kdm197.github.io/favicon.png">
+<link rel="apple-touch-icon" href="https://kdm197.github.io/apple-touch-icon.png">
+
+
+<meta name="twitter:card" content="summary" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="内存对齐细节">
+<meta property="og:description" content="补充一些平时可能会疏忽的&#43;有趣的对齐细节
+" />
+<meta property="og:url" content="https://kdm197.github.io/posts/mem_align/" />
+<meta property="og:site_name" content="Neverland" />
+
+  <meta property="og:image" content="https://kdm197.github.io/og-image.png">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2026-05-27 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+
+<div class="container center">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    KDM&#39;s Blog
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about" >About</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://kdm197.github.io/posts/mem_align/">内存对齐细节</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2026-05-27</time><span class="post-reading-time">2 min read (651 words)</span></div>
+
+  
+  
+
+
+  
+    <details class="table-of-contents" open>
+      <summary>
+        目录
+      </summary>
+      <nav id="TableOfContents"></nav>
+    </details>
+  
+
+  <div class="post-content"><div>
+        <p>补充一些平时可能会疏忽的+有趣的对齐细节</p>
+<p>对于现代x64处理器，不跨cache line的非对齐访问通常已经不是很大的问题，这个范畴内对齐与否通常只有μop级别的差距；需要注意的是手动内存管理的随意非对齐问题：如果数据分布随机，跨越cache line的概率就会大大增加，导致性能降低；现代编译器实现中的堆栈对齐一部分是对cache的考量而不再是远古时期对dram的考量。</p>
+<p>然而堆栈对齐更主要是为了保证simd的正常运行；simd使用的长数据在非对齐情况下更容易跨越cache line（avx512向量正好就是cache line大小），非对齐情况下编译器无法为simd生成对齐专用指令（movaps非对齐会直接硬件异常）；即使不用对齐专用指令，movups在对齐情况下的表现也更加稳健（其实仍然是cache-line问题）</p>
+<p>其他类型处理器或旧处理器往往没那么宽松：Cortex-M允许拦截非对齐访问，而其他甚至可能在非对齐访问时直接硬件异常；良好的跨平台代码仍需要严格考虑对齐问题。</p>
+<p>尽管大多数现代cpu的cache line是64 bytes， 部分cpu的数据总线或fpu宽度却只有32 bytes，avx512的运算会被拆成两个μop，所以速度与avx2差不了多少</p>
+<p>我遇到的陷阱：为某个内存区域添加隐式header时（比如做slice）一不注意可能就会破坏对齐：</p>
+<div class="highlight"><pre tabindex="0" style="color:#575279;background-color:#faf4ed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#286983">static</span> <span style="color:#286983">uint8_t</span> <span style="color:#797593">*</span><span style="color:#d7827e">_p</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#9893a5">#define $(T) (_p = &amp;(uint8_t[sizeof(T)+4]){0}, do_sth_to_hdr(_p), (T*)(_p+4))
+</span></span></span><span style="display:flex;"><span><span style="color:#9893a5">// 最后的偏移可能破坏对齐！
+</span></span></span></code></pre></div><p>更好的作法应该是利用结构体自动对齐：</p>
+<div class="highlight"><pre tabindex="0" style="color:#575279;background-color:#faf4ed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#286983">static</span> <span style="color:#286983">void</span> <span style="color:#797593">*</span><span style="color:#d7827e">_p</span><span style="color:#797593">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#9893a5">#define $(T) (_p = &amp;(struct{int rc; T v;}){0}, do_sth_to_hdr(_p), (T*)&amp;_p-&gt;v)
+</span></span></span></code></pre></div><p>搜索时发现的很棒的指南：<a href="https://en.algorithmica.org/">Algorithmica</a></p>
+      </div></div>
+
+  
+    
+<div class="pagination">
+  <div class="pagination__title">
+    <span class="pagination__title-h">Read other posts</span>
+    <hr />
+  </div>
+  <div class="pagination__buttons">
+    
+    
+    
+      <a href="https://kdm197.github.io/posts/26_26_may/" class="button inline next">
+         [<span class="button__text">五月做的一些事</span>] &gt;
+      </a>
+    
+  </div>
+</div>
+
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2026 Powered by <a href="https://gohugo.io">Hugo</a></span>
+    
+      <span>:: <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

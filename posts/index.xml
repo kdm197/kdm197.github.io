@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Neverland</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 27 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 28 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://kdm197.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>十分不专业的木马分析0</title>
+      <link>https://kdm197.github.io/posts/malware_bdg0/</link>
+      <pubDate>Thu, 28 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://kdm197.github.io/posts/malware_bdg0/</guid>
+      <description>&lt;p&gt;似乎是最近流行的一种木马，临时学了点逆向，尝试静态分析它&lt;/p&gt;</description>
+    </item>
     <item>
       <title>内存对齐细节</title>
       <link>https://kdm197.github.io/posts/mem_align/</link>

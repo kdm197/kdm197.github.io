@@ -153,7 +153,7 @@
   <h1 class="post-title">
     <a href="https://kdm197.github.io/posts/weird_ctypes/">对于c类型系统的思考：不存在的类型，所有权与更多</a>
   </h1>
-  <div class="post-meta"><time class="post-date">2026-06-03</time><span class="post-reading-time">4 min read (1617 words)</span></div>
+  <div class="post-meta"><time class="post-date">2026-06-03</time><span class="post-reading-time">4 min read (1607 words)</span></div>
 
   
   
@@ -170,8 +170,8 @@
 
   <div class="post-content"><div>
         <p>这学期有数据结构的课程，完成课程之余我会用c重写或实现一些其他类型；当一个泛型数据结构需要拷贝外部数据时，C（甚至C++）的实现中会遇到一些有趣的抉择。</p>
-<p>拷贝外部数据？对于c++倒没什么好说的：C++有模板做泛型支持，拷贝一般直接使用目标类型的拷贝构造或赋值重载就好了，深浅拷贝与所有权问题后面再说；对于C，实现泛型的选项只有两个，要么使用void指针擦除类型，要么使用宏魔法；最简单的作法与调用者约定只能传入指针，生命周期由调用者负责；再高级点可以模拟oop的构造与析构函数实现自动生命周期管理。但如果我不想为每个类型手动实现构造/析构呢？？</p>
-<p>一般实现的困难在于调用者传入的复杂类型会退化成指针，无法分辨调用者是想用类型本身还是类型引用作为kv；那么我们就显式传入类型信息：</p>
+<p>拷贝外部数据对于c++倒没什么好说的：C++有模板做泛型支持，拷贝直接使用目标类型的拷贝构造或赋值重载，深浅拷贝与所有权问题后面再说；对于C，实现泛型的选项只有两个，要么使用void指针擦除类型，要么使用宏魔法；最简单的作法是约定调用者只能传入指针，生命周期由调用者负责。再高级点可以模拟oop的构造与析构函数实现自动生命周期管理。但如果我不想为每个类型手动实现构造/析构呢？？</p>
+<p>一般实现的困难在于，调用者传入的复杂类型会退化成指针，无法分辨调用者是想用类型本身还是类型引用作为kv；那么我们就显式传入类型信息：</p>
 <div class="highlight"><pre tabindex="0" style="color:#575279;background-color:#faf4ed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#9893a5">// 版本1
 </span></span></span><span style="display:flex;"><span><span style="color:#9893a5">#define rb(key, value) \
 </span></span></span><span style="display:flex;"><span><span style="color:#9893a5">struct { \
@@ -193,7 +193,7 @@
 </span></span><span style="display:flex;"><span>    <span style="color:#d7827e">rb</span><span style="color:#797593">(</span><span style="color:#d7827e">string</span><span style="color:#797593">,</span> <span style="color:#286983">int</span><span style="color:#797593">)</span> <span style="color:#d7827e">tree</span> <span style="color:#797593">=</span> <span style="color:#797593">{</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#797593">.</span><span style="color:#d7827e">cmp</span> <span style="color:#797593">=</span> <span style="color:#d7827e">str_cmp</span><span style="color:#797593">,</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#797593">};</span> <span style="color:#9893a5">// 可以安全转型
-</span></span></span><span style="display:flex;"><span>    <span style="color:#9893a5">// 如果愿意抛弃点运算符赋值：
+</span></span></span><span style="display:flex;"><span>    <span style="color:#9893a5">// 如果愿意放弃炫酷模板语法：
 </span></span></span><span style="display:flex;"><span><span style="color:#797593">}</span>
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#575279;background-color:#faf4ed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#9893a5">// 版本2
 </span></span></span><span style="display:flex;"><span><span style="color:#286983">typedef</span> <span style="color:#286983">struct</span> <span style="color:#d7827e">rb_tree</span> <span style="color:#797593">{</span>
@@ -210,7 +210,7 @@
 </span></span><span style="display:flex;"><span>    <span style="color:#d7827e">rb_tree</span> <span style="color:#d7827e">tree</span> <span style="color:#797593">=</span> <span style="color:#d7827e">rb</span><span style="color:#797593">(</span><span style="color:#d7827e">str</span><span style="color:#797593">,</span> <span style="color:#286983">int</span><span style="color:#797593">,</span> <span style="color:#d7827e">str_cmp</span><span style="color:#797593">);</span> <span style="color:#9893a5">//获得更好的跨函数灵活性
 </span></span></span><span style="display:flex;"><span><span style="color:#797593">}</span>
 </span></span></code></pre></div><p>有了这些类型信息我们可以做到不少有趣的事：sizeof信息可以用来判断需要拷贝多少字节，对于小于等于指针大小的数据（指针大小一般等于处理器位数大小）可以直接赋值，不用拷贝（但根据<a href="https://learn.microsoft.com/en-us/cpp/build/x64-calling-convention?view=msvc-170#calling-convention-defaults">windows abi文档</a>, 3、5、6、7字节的类型仍需要拷贝）；如要实现at接口，也可以用同样方法判断要返回void<em>还是void**（当void</em>直接承载value时）。对于版本1的实现，我们甚至能通过<code>__type__()</code>来实现更高级的功能（尽管该标准到c23才落实）。版本1的缺点是传递给其他函数会丢失kv的类型。</p>
-<p>如果注意到上述代码中写的是str而不是char *就会注意到问题所在：字符串无法在这里实现拷贝！仔细一想就会发现：字符串“类型”根本不存在于c，却被当作标准一直使用着：char *对于c来说只是char类型的指针，而字符串语义是人们强加上去的，c类型系统从来不知道有这个东西存在，自然也就无法对其做其他类型的统一操作。而更深层次的问题是：c语言甚至更多其他语言中不存在动态大小的类型，即类型系统本身无法静态地表达大小这个信息，sizeof获得的大小也是事后分析得出的。所以为了做到这一点，必须在类型外表达大小信息。</p>
+<p>如果注意到上述代码中写的是str而不是char *就会发现问题所在：字符串无法在这里实现拷贝！仔细一想，字符串“类型”根本不存在于c，却被当作标准一直使用着：char *对于c来说只是char类型的指针，而字符串语义是人们强加上去的，c类型系统从来不知道有这个东西存在，自然也就无法对其做其他类型的统一操作。而更深层次的问题是：c语言甚至更多其他语言中不存在动态大小的类型，即类型系统本身无法静态地表达大小这个信息，sizeof获得的大小也是事后分析得出的。所以为了做到这一点，必须在类型外表达大小信息。</p>
 <p>而c/c++中的所有权问题和上述问题是同一模式的：裸指针的语义是“我不是所有者，我只是借用了资源，我不应该删除它”，但这只是约定，不是类型系统强制的。c/c++类型系统本身无法静态地表达所有权信息，为了做到这一点，必须在类型外表达所有权信息，即像<a href="https://gist.github.com/fish2000/7949ed279a6ce41302df371e1833f32c">Core Guidelines</a>所述的<code>owner&lt;T*&gt;</code>泛型：它什么也不做，唯一的作用是供静态分析工具检测是否存在违反所有权模型。</p>
 <p>更直接的说法是：类型系统缺乏表达某种信息的能力，为了使用这种信息，只能遵守某种约定，或在外部提供额外信息（约定又何尝不是外部信息呢？）。</p>
 <p>在这之上我们能看到三种解决路径：</p>

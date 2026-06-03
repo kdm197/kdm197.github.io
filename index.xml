@@ -6,14 +6,21 @@
     <description>Recent content on Neverland</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 28 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 03 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://kdm197.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>十分不专业的木马分析0</title>
+      <title>对于c类型系统的思考：不存在的类型，所有权与更多</title>
+      <link>https://kdm197.github.io/posts/weird_ctypes/</link>
+      <pubDate>Wed, 03 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://kdm197.github.io/posts/weird_ctypes/</guid>
+      <description>&lt;p&gt;这学期有数据结构的课程，完成课程之余我会用c重写或实现一些其他类型；当一个泛型数据结构需要拷贝外部数据时，C（甚至C++）的实现中会遇到一些有趣的抉择。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>十分不专业的木马分析</title>
       <link>https://kdm197.github.io/posts/malware_bdg0/</link>
       <pubDate>Thu, 28 May 2026 00:00:00 +0000</pubDate>
       <guid>https://kdm197.github.io/posts/malware_bdg0/</guid>
-      <description>&lt;p&gt;似乎是最近流行的一种木马，临时学了点逆向，尝试静态分析它&lt;/p&gt;</description>
+      <description>&lt;p&gt;似乎是最近流行的一种木马。本ctf新手的第一次静态分析&lt;/p&gt;</description>
     </item>
     <item>
       <title>内存对齐细节</title>

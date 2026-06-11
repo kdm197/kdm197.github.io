@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Neverland</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 03 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 11 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://kdm197.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>学习傅里叶变换</title>
+      <link>https://kdm197.github.io/posts/fourier/</link>
+      <pubDate>Thu, 11 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://kdm197.github.io/posts/fourier/</guid>
+      <description>&lt;p&gt;初衷是想要为我的合成器写一个EQ均衡器，不满足于一般的推导，这里来仔细研究下。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>对于c类型系统的思考：不存在的类型，所有权与更多</title>
       <link>https://kdm197.github.io/posts/weird_ctypes/</link>
